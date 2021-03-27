@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
@@ -25,7 +26,7 @@ public class Compilador {
         this.entrada = entrada;
     }
     
-    public String analizarArchivo(){
+    public String leerArchivo(){
         //Metodo para cargar documento con código fuente
         JFileChooser docSeleccionado = new JFileChooser();//Cuadro de dialogo para seleccionar documento
         File documento;
@@ -106,7 +107,14 @@ public class Compilador {
                     //System.out.println("Palabra reservada="+ora);
                 }
                 else{//caso contrario es un identificador o variable
-                    resultado += " ID [ " + ora + " ], ";
+                    if(!poo(ora).equalsIgnoreCase("")){
+                        resultado += " POO [ " + ora + " ], ";
+                    }else if(ambito(ora).equalsIgnoreCase("")){
+                        resultado += " ID [ " + ora + " ], ";
+                    }else{
+                        resultado += " AMBITO [ " + ora + " ], ";
+                    }
+                    
                     //resultadoCompilacion.append(" ID [ " + ora + " ], ");
                     //System.out.println("Identificador-->"+ora);
                 }
@@ -120,7 +128,101 @@ public class Compilador {
                 
                 if(evaluarCaracter(t)){//¿es separador?
                     
-                    if (evaluarSeparador(t)== ';') {
+                    if ((evaluarSeparador(t)== ';')||(evaluarSeparador(t)== '{')||(evaluarSeparador(t)== '}')) {
+                        resultado += " \n ";
+                        //resultadoCompilacion.append(" \n ");//COMPARA SI SE TRATA DE UN OPERADOR DE SINTAXIS
+                    } else {
+                        resultado += " LT [ " + evaluarSeparador(t) + "], ";
+                        //resultadoCompilacion.append(" LT [ " + evaluarSeparador(t) + "], ");
+                    }
+                    //System.out.println("Separador-->"+evaluarSeparador(t));
+                }else{ //¿o es un operador?
+                    if (evaluarOperador(t) == ' ') {
+                        //System.out.println("Es un espacio");
+                    } else {
+                        resultado += " OP [ " + evaluarOperador(t) + " ], ";
+                        //resultadoCompilacion.append(" OP [ " + evaluarOperador(t) + " ], ");
+                    }
+                    //System.out.println("Operador-->"+evaluarOperador(t));
+                }
+                i++;
+                continue;
+            }//end if si es diferente de letra y dígito
+        }
+        return resultado;
+    }
+    
+    public String analizarTabla(String info){
+        String cad=info.trim();
+   
+        String resultado = "";
+    
+        int i=0;
+        
+        //eliminamos los espacios en blanco al inicio o al final (pero no a la mitad)
+        while(i<cad.length()){//recorremos la línea
+            
+            //cad.split(";");
+            char t=cad.charAt(i);//vamos leyendo caracter por caracter
+            
+            if(Character.isDigit(t)){//comprobamos si es un dígito
+                String ora="";
+                ora+=t;
+                int j=i+1;
+                while(Character.isDigit(cad.charAt(j))){
+                    //mientras el siguiente elemento sea un numero
+                    ora+=cad.charAt(j);//concatenamos
+                    j++;
+                    if(j==cad.length())break;//rompemos si llegamos al final de la línea
+                }
+                i=j;//movemos a nuestra variable i en la cadena
+                resultado +=" NUM [ " + ora + " ], ";
+                
+                
+                //resultadoCompilacion.append(" NUM [ " + ora + " ], ");
+                //System.out.println("Número-->"+ora);
+                continue;//pasamos al siguiente elemento
+            }//end if si es Dígito
+            else if(Character.isLetter(t)){//comprobamos si es una letra
+                String ora="";
+                ora+=t;
+                int j=i+1;
+                while(Character.isLetterOrDigit(cad.charAt(j))){
+                    //mientras el siguiente elemento sea una letra o un digito
+                    //ya que las variables pueden ser con números
+                    ora+=cad.charAt(j);
+                    j++;
+                    if(j==cad.length())break;
+                }
+                i=j;
+                if(palabraReservada(ora)){//comprobamos si es una palabra reservada
+                    
+                    resultado += " PR [ " + ora + " ], ";
+                    //resultadoCompilacion.append(" PR [ " + ora + " ], ");
+                    //System.out.println("Palabra reservada="+ora);
+                    
+                }
+                else{//caso contrario es un identificador o variable
+                    if(ambito(ora).equalsIgnoreCase("")){
+                        resultado += " ID [ " + ora + " ], ";
+                    }else if(!poo(ora).equalsIgnoreCase("")){
+                        resultado += " POO [ " + ora + " ], ";
+                    }else{
+                        resultado += " AMBITO [ " + ora + " ], ";
+                    }
+                    //resultadoCompilacion.append(" ID [ " + ora + " ], ");
+                    //System.out.println("Identificador-->"+ora);
+
+                }
+                
+                continue;
+            }//end if si es variable
+            else if(!Character.isLetterOrDigit(t)){
+                //si no es letra ni dígito entonces...
+
+                if(evaluarCaracter(t)){//¿es separador?
+                    
+                    if ((evaluarSeparador(t)== ';')||(evaluarSeparador(t)== '{')||(evaluarSeparador(t)== '}')) {
                         resultado += " \n ";
                         //resultadoCompilacion.append(" \n ");//COMPARA SI SE TRATA DE UN OPERADOR DE SINTAXIS
                     } else {
@@ -143,6 +245,7 @@ public class Compilador {
         }
         return resultado;
     }
+    
     
     // Verificamos si es una palabra reservada.
     public boolean palabraReservada(String cad){
@@ -192,6 +295,12 @@ public class Compilador {
                 break;
             case ';':
                 car=';';
+                break;
+            case '{':
+                car='{';
+                break;
+            case '}':
+                car='}';
                 break;
             default:
                 break;
@@ -363,6 +472,28 @@ public class Compilador {
             return true;
         } else {
             return false;
+        }
+    }
+    
+    public String ambito(String cad){
+        if (cad.equalsIgnoreCase("public")) {
+            return cad;
+        } else if (cad.equalsIgnoreCase("private")) {
+            return cad;
+        } else if (cad.equalsIgnoreCase("Protected")) {
+            return cad;
+        } else {
+            return "";
+        }
+    }
+    
+    public String poo(String cad){
+        if (cad.equalsIgnoreCase("class")) {
+            return cad;
+        } else if (cad.equalsIgnoreCase("funtion")) {
+            return cad;
+        } else {
+            return "";
         }
     }
     

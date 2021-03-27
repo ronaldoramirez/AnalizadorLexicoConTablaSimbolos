@@ -7,7 +7,6 @@ import clases.Compilador;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author Leo
@@ -18,6 +17,7 @@ public class VistaCompilador extends javax.swing.JFrame {
      * Creates new form VistaCompilador
      */
     Compilador miCompilador = new Compilador();
+
     public VistaCompilador() {
         initComponents();
     }
@@ -31,14 +31,30 @@ public class VistaCompilador extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        escritorio = new javax.swing.JDesktopPane();
+        analizar = new javax.swing.JButton();
+        tablaSimbolos = new javax.swing.JButton();
         abrirArchivo = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         resultadoCompilacion = new javax.swing.JTextArea();
         jScrollPane2 = new javax.swing.JScrollPane();
         codigoFuente = new javax.swing.JTextArea();
-        analizar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        analizar.setText("Analizar");
+        analizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                analizarActionPerformed(evt);
+            }
+        });
+
+        tablaSimbolos.setText("Tabla");
+        tablaSimbolos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tablaSimbolosActionPerformed(evt);
+            }
+        });
 
         abrirArchivo.setText("Abrir Archivo");
         abrirArchivo.addActionListener(new java.awt.event.ActionListener() {
@@ -55,63 +71,89 @@ public class VistaCompilador extends javax.swing.JFrame {
         codigoFuente.setRows(5);
         jScrollPane2.setViewportView(codigoFuente);
 
-        analizar.setText("Analizar");
-        analizar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                analizarActionPerformed(evt);
-            }
-        });
+        escritorio.setLayer(analizar, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        escritorio.setLayer(tablaSimbolos, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        escritorio.setLayer(abrirArchivo, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        escritorio.setLayer(jScrollPane1, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        escritorio.setLayer(jScrollPane2, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        javax.swing.GroupLayout escritorioLayout = new javax.swing.GroupLayout(escritorio);
+        escritorio.setLayout(escritorioLayout);
+        escritorioLayout.setHorizontalGroup(
+            escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(escritorioLayout.createSequentialGroup()
+                .addGap(46, 46, 46)
+                .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(escritorioLayout.createSequentialGroup()
+                        .addComponent(abrirArchivo)
+                        .addGap(367, 367, 367)
+                        .addComponent(analizar)
+                        .addGap(149, 149, 149)
+                        .addComponent(tablaSimbolos))
+                    .addGroup(escritorioLayout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 339, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(56, 56, 56)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 354, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(100, Short.MAX_VALUE))
+        );
+        escritorioLayout.setVerticalGroup(
+            escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(escritorioLayout.createSequentialGroup()
+                .addGap(139, 139, 139)
+                .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(analizar)
+                    .addComponent(tablaSimbolos)
+                    .addComponent(abrirArchivo))
+                .addGap(45, 45, 45)
+                .addGroup(escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(escritorioLayout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 346, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(198, Short.MAX_VALUE))
+                    .addGroup(escritorioLayout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(67, 67, 67)
-                .addComponent(abrirArchivo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 221, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(analizar)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 435, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(28, 28, 28))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(20, 20, 20)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 339, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(487, Short.MAX_VALUE)))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(escritorio)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(37, 37, 37)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(abrirArchivo)
-                    .addComponent(analizar))
-                .addGap(27, 27, 27)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 351, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(59, Short.MAX_VALUE))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(88, 88, 88)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(59, Short.MAX_VALUE)))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(escritorio)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void abrirArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_abrirArchivoActionPerformed
-        
-        codigoFuente.setText(miCompilador.analizarArchivo());
-        
+
+        codigoFuente.setText(miCompilador.leerArchivo());
+
     }//GEN-LAST:event_abrirArchivoActionPerformed
 
     private void analizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_analizarActionPerformed
-        // TODO add your handling code here:
-        String info = codigoFuente.getText();
-        resultadoCompilacion.setText(miCompilador.analizarTexto(info));
-        
+
+        resultadoCompilacion.setText(miCompilador.analizarTexto(codigoFuente.getText()));
+
     }//GEN-LAST:event_analizarActionPerformed
+
+    private void tablaSimbolosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tablaSimbolosActionPerformed
+
+        String cadena = miCompilador.analizarTexto(codigoFuente.getText());
+        TablaSimbolos miTabla = new TablaSimbolos(cadena);
+        this.escritorio.add(miTabla);
+        miTabla.setTitle("Automata #Numero Real");
+        miTabla.show();
+    }//GEN-LAST:event_tablaSimbolosActionPerformed
 
     /**
      * @param args the command line arguments
@@ -147,15 +189,16 @@ public class VistaCompilador extends javax.swing.JFrame {
             }
         });
     }
-    
-   
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton abrirArchivo;
     private javax.swing.JButton analizar;
     private javax.swing.JTextArea codigoFuente;
+    private javax.swing.JDesktopPane escritorio;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextArea resultadoCompilacion;
+    private javax.swing.JButton tablaSimbolos;
     // End of variables declaration//GEN-END:variables
 }
